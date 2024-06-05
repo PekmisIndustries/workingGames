@@ -1,9 +1,9 @@
-#include <iostream>
-#include <fstream>
+//EVERYTHING HAS BEEN MOVED TO bigBrain.cpp /!\
+
+
+/*#include <fstream>
 #include <string>
 #include <filesystem>
-#include <shlobj.h>
-#include <windows.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -42,13 +42,10 @@ int main() {
     else
         //doesnt exist
         printf( "%s is no directory\n", folderPath.c_str() );
-        createDirectories();
-
-
-
-    std::cout << "\n\n\n\nthe folderpath specified is : " << folderPath;
-
-    
+        createDirectories();    
 
     return 0;
 }
+*/
+
+
