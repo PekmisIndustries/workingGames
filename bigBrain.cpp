@@ -5,7 +5,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <vector>
-#include "C:\Users\Pekmi\Documents\.UnitProject\working games!\Assets\theRealPart\include\miniz.h"
+#include ".\include\miniz.h"
 
 
 std::string appdata;
