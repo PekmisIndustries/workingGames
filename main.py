@@ -1,7 +1,7 @@
 import os
 import os.path
-import sys
 import time
+import shutil
 
 
 def create_directories():
@@ -20,7 +20,7 @@ def get_skrakmi_file():
             sfile = sfile[2:]
         try:
             with open(sfile, "r") as f:
-                output = [f.readline().strip() for _ in range(6)]
+                output = [f.readline().strip() for _ in range(10)]
                 return output
         except FileNotFoundError:
             print("File not found. Please try again.")
@@ -29,35 +29,86 @@ def get_skrakmi_file():
 
 
 def create_game_folder(game_name):
-    os.makedirs(game_name, exist_ok=True)
+    os.makedirs(os.path.join("wg", game_name), exist_ok=True)
     return 0
 
 def download_game_torrent(magnet_link):
-    aria_path = os.path.abspath("aria/aria2c.exe")
+    aria_path = os.path.abspath("aria\\aria2c.exe")
     save_path = os.path.abspath("wg\\download")
-    with open("ariaPath.txt", "w") as f:
+    with open("wg\\ariaPath.txt", "w") as f:
         f.write(aria_path) 
-    with open("magnetToDownload.txt", "w") as m:
+    with open("wg\\magnetToDownload.txt", "w") as m:
         m.write(magnet_link)
-    with open("downloadFolderPath.txt", "w") as m:
+    with open("wg\\downloadFolderPath.txt", "w") as m:
         m.write(save_path)
+    print("Created paths text file")
+    print("Starting the download file")
     os.startfile("magnet.sh")
+
+def move_downloaded_game():
+    for filename in os.listdir("wg\\download"):
+        file_path = os.path.join("wg\\download", filename)
+        shutil.move(file_path, "wg\\unzipped")
+
+def check_download_state():
+    while True:
+        time.sleep(2)
+        if(os.path.exists("wg\\download_complete.txt")):
+            os.remove("wg\\download_complete.txt")
+            return 0
+
+def apply_crack(crack_path, crack_destination):
+    for filename in os.listdir(crack_path):
+        file_path = os.path.join(crack_path, filename)
+        dest_path = os.path.join(crack_destination, filename)
+        if os.path.exists(dest_path):
+            os.remove(dest_path)
+        shutil.move(file_path, crack_destination)
+    print("crack applied")
+
+def move_game_to_personal_folder():
+    origin = os.path.abspath("wg\\unzipped")
+    destination = os.path.join("wg\\", sf[0])
+    for filename in os.listdir(origin):
+        file_path = os.path.join(origin, filename)
+        shutil.move(file_path, destination)
+
+
 
 
 
 create_directories()
+print("Verified directories")
 
 sf = get_skrakmi_file()
+print("Found Skrakmi file")
+
 create_game_folder(sf[0])
+print("Created game directory")
 
 if(sf[1] == "1"):
+    print("Torrent/Magnet detected\nDownloading game")
     download_game_torrent(sf[3])
-    pass
 if(sf[1] == "0"):
     #download_game_link(sf[2])
     pass
 
+check_download_state()
 
+if(sf[4] == "1"):
+    print("download zipped\nunzipping download")
+    os.startfile("unzipper.py")
+if(sf[4] == "0"):
+    print("download already unzipped\nmoving download")
+    move_downloaded_game()
 
+if(sf[5] == "1"):
+    print("applying crack")
+    apply_crack(os.path.join("wg/unzipped/", sf[6]), os.path.join("wg/unzipped/", sf[7]))
 
-#os.startfile("unzipper.py")
+print("moving game")
+move_game_to_personal_folder()
+
+input("Game Ready!\nType something to launch the game!")
+
+os.startfile(os.path.join("wg\\", sf[0], sf[8]))

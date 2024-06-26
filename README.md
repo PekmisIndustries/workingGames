@@ -12,4 +12,5 @@ skrakmi file :
     6 crack path (if 4)
     7 crack destination (if 4)
     8 executable path
-    9+ free/comments
+    9 comments
+    10 free
