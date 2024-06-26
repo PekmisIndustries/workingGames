@@ -2,6 +2,7 @@ import os
 import os.path
 import time
 import shutil
+import subprocess
 
 
 def create_directories():
@@ -39,11 +40,17 @@ def download_game_torrent(magnet_link):
         f.write(aria_path) 
     with open("wg\\magnetToDownload.txt", "w") as m:
         m.write(magnet_link)
-    with open("wg\\downloadFolderPath.txt", "w") as m:
-        m.write(save_path)
-    print("Created paths text file")
-    print("Starting the download file")
-    os.startfile("magnet.sh")
+    with open("wg\\downloadFolderPath.txt", "w") as n:
+        n.write(save_path)
+    print("Created paths text files")
+    print("Starting download process")
+    #os.startfile("magnet.sh")
+    #os.startfile("magnet.py")
+    os.startfile("magnet.bat")
+
+
+
+
 
 def move_downloaded_game():
     for filename in os.listdir("wg\\download"):
