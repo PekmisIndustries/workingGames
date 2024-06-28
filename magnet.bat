@@ -1,31 +1,35 @@
 @echo off
 setlocal
 
-rem Set variables
+rem Set the directory of the current script
 set WG_FOLDER=%~dp0wg
-set /p ARIA2C_EXE_PATH<"%WG_FOLDER%\ariaPath.txt"
-set DOWNLOAD_FOLDER=%WG_FOLDER%\download
 
-rem Convert DOWNLOAD_FOLDER path if needed
-set DOWNLOAD_FOLDER_WINDOWS=%DOWNLOAD_FOLDER%
-
-rem Read magnet link from file
+rem Read paths and URLs from the text files
+set /p ARIA2C_EXE_PATH=<"%WG_FOLDER%\ariaPath.txt"
 set /p MAGNET_URL=<"%WG_FOLDER%\magnetToDownload.txt"
+set /p DOWNLOAD_FOLDER=<"%WG_FOLDER%\downloadFolderPath.txt"
 
-rem Remove line breaks from magnet link
-set "MAGNET_URL=%MAGNET_URL:\\=\%"
-set "MAGNET_URL=%MAGNET_URL:\=\\%"
-set "MAGNET_URL=%MAGNET_URL:&=^&%"
-set "MAGNET_URL=%MAGNET_URL:|=^|%"
-set "MAGNET_URL=%MAGNET_URL:<=^<%"
-set "MAGNET_URL=%MAGNET_URL:>=^>%"
-set "MAGNET_URL=%MAGNET_URL:/=^/%"
+rem Convert Unix-style paths to Windows-style paths if needed
+for %%F in ("%DOWNLOAD_FOLDER%") do set "DOWNLOAD_FOLDER_WINDOWS=%%~fF"
 
-rem Run aria2c
-echo %MAGNET_URL%
-"%ARIA2C_EXE_PATH%" "%MAGNET_URL%" --seed-time --dir "%DOWNLOAD_FOLDER_WINDOWS%"
+rem Ensure the path conversion is correct
+if not defined DOWNLOAD_FOLDER_WINDOWS (
+    echo Error: Unable to convert the download folder path.
+    pause
+    exit /b 1
+)
+
+rem Display the magnet URL and start downloading
+echo Downloading: "%MAGNET_URL%"
+echo Running command: "%ARIA2C_EXE_PATH%" --dir="%DOWNLOAD_FOLDER_WINDOWS%" --seed-time=0 --file-allocation=none "%MAGNET_URL%"
+"%ARIA2C_EXE_PATH%" --dir="%DOWNLOAD_FOLDER_WINDOWS%" --seed-time=0 --file-allocation=none -V --disable-ipv6 "%MAGNET_URL%"
+
+rem Check the result of the download operation
+if %errorlevel% neq 0 (
+    echo Error: aria2c encountered a problem.
+    pause
+    exit /b 1
+)
 
 rem Write download complete indicator
 echo Download complete! > "%WG_FOLDER%\download_complete.txt"
-pause
-goto :eof

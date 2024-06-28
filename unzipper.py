@@ -32,4 +32,7 @@ destination_folder = "wg\\unzipped"
 
 unzip_file(zip_file_path, destination_folder)
 
+with open("wg\\unzipped.txt", 'w') as f:
+    f.write("unzipped :3")
+
 print("ended successfully")

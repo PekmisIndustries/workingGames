@@ -5,6 +5,11 @@ import shutil
 import subprocess
 
 
+def reset():
+    if os.path.isfile("wg"):
+        os.rmdir("wg", ignore_errors=True)
+    print("reset done")
+
 def create_directories():
     os.makedirs("wg\\game", exist_ok=True)
     os.makedirs("wg\\path", exist_ok=True)
@@ -28,7 +33,6 @@ def get_skrakmi_file():
         except Exception as e:
             print(f"Error reading file: {e}")
 
-
 def create_game_folder(game_name):
     os.makedirs(os.path.join("wg", game_name), exist_ok=True)
     return 0
@@ -48,10 +52,6 @@ def download_game_torrent(magnet_link):
     #os.startfile("magnet.py")
     os.startfile("magnet.bat")
 
-
-
-
-
 def move_downloaded_game():
     for filename in os.listdir("wg\\download"):
         file_path = os.path.join("wg\\download", filename)
@@ -62,6 +62,13 @@ def check_download_state():
         time.sleep(2)
         if(os.path.exists("wg\\download_complete.txt")):
             os.remove("wg\\download_complete.txt")
+            return 0
+        
+def check_unzipping_state():
+    while True:
+        time.sleep(2)
+        if(os.path.exists("wg\\unzipped.txt")):
+            os.remove("wg\\unzipped.txt")
             return 0
 
 def apply_crack(crack_path, crack_destination):
@@ -81,9 +88,10 @@ def move_game_to_personal_folder():
         shutil.move(file_path, destination)
 
 
+#----------------------------------------------------------
 
 
-
+reset()
 create_directories()
 print("Verified directories")
 
@@ -105,6 +113,7 @@ check_download_state()
 if(sf[4] == "1"):
     print("download zipped\nunzipping download")
     os.startfile("unzipper.py")
+    check_unzipping_state()
 if(sf[4] == "0"):
     print("download already unzipped\nmoving download")
     move_downloaded_game()
@@ -117,5 +126,4 @@ print("moving game")
 move_game_to_personal_folder()
 
 input("Game Ready!\nType something to launch the game!")
-
 os.startfile(os.path.join("wg\\", sf[0], sf[8]))
