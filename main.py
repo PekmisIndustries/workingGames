@@ -135,4 +135,7 @@ print("moving game")
 move_game_to_personal_folder()
 
 input("Game Ready!\nType something to launch the game!")
-os.startfile(os.path.join("wg/", sf[0], sf[8]))
+if sys.platform == "win32":
+    os.startfile(os.path.join("wg/", sf[0], sf[8]))
+else:
+    os.system("echo 'not yet implemented'")
