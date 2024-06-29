@@ -118,7 +118,10 @@ check_download_state()
 
 if(sf[4] == "1"):
     print("download zipped\nunzipping download")
-    os.startfile("unzipper.py")
+    if sys.platform == "win32":
+        os.startfile("unzipper.py")
+    else:
+        os.system("python unzipper.py")
     check_unzipping_state()
 if(sf[4] == "0"):
     print("download already unzipped\nmoving download")

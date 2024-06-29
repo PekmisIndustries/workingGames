@@ -26,13 +26,13 @@ def unzip_file(zip_path, extract_to):
     delete_download_file(zip_path)
     
 
-download_folder = "wg\\download"
+download_folder = "wg/download"
 zip_file_path = find_single_zip_file(download_folder)
-destination_folder = "wg\\unzipped"
+destination_folder = "wg/unzipped"
 
 unzip_file(zip_file_path, destination_folder)
 
-with open("wg\\unzipped.txt", 'w') as f:
+with open("wg/unzipped.txt", 'w') as f:
     f.write("unzipped :3")
 
 print("ended successfully")
