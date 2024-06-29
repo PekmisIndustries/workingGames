@@ -2,9 +2,9 @@ import os
 import os.path
 import time
 import shutil
-import subprocess
+import sys
 
-def open_file(filename):
+def open_file():
     if sys.platform == "win32":
         os.startfile("magnet.bat")
     else:
@@ -56,7 +56,7 @@ def download_game_torrent(magnet_link):
     print("Starting download process")
     #os.startfile("magnet.sh")
     #os.startfile("magnet.py")
-    open_file
+    open_file()
 
 def move_downloaded_game():
     for filename in os.listdir("wg/download"):
