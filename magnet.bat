@@ -21,15 +21,8 @@ if not defined DOWNLOAD_FOLDER_WINDOWS (
 
 rem Display the magnet URL and start downloading
 echo Downloading: "%MAGNET_URL%"
-echo Running command: "%ARIA2C_EXE_PATH%" --dir="%DOWNLOAD_FOLDER_WINDOWS%" --seed-time=0 --file-allocation=none "%MAGNET_URL%"
-"%ARIA2C_EXE_PATH%" --dir="%DOWNLOAD_FOLDER_WINDOWS%" --seed-time=0 --file-allocation=none -V --disable-ipv6 "%MAGNET_URL%"
-
-rem Check the result of the download operation
-if %errorlevel% neq 0 (
-    echo Error: aria2c encountered a problem.
-    pause
-    exit /b 1
-)
+echo Running command: "%ARIA2C_EXE_PATH%" --dir="%DOWNLOAD_FOLDER_WINDOWS%" --enable-dht=true --bt-enable-lpd=true --enable-peer-exchange=true --dht-listen-port=6881-6999 --seed-time=0 --file-allocation=none --disable-ipv6 "%MAGNET_URL%"
+"%ARIA2C_EXE_PATH%" --dir="%DOWNLOAD_FOLDER_WINDOWS%" --enable-dht=true --bt-enable-lpd=true --enable-peer-exchange=true --dht-listen-port=6881-6999 --seed-time=0 --file-allocation=none --disable-ipv6 "%MAGNET_URL%"
 
 rem Write download complete indicator
 echo Download complete! > "%WG_FOLDER%\download_complete.txt"
